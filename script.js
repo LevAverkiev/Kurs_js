@@ -1,22 +1,16 @@
-let title;
-let screens;
-let screenPrice;
-let rollback;
-let fullPrice;
-let adaptive;
+let num = 266219;
+let arr = String(num).split("");
+let multiplication = 1;
+let degree;
+let numTwo;
 
-title = 'My Project';
-screens = 'Простые, Сложные, Интерактивные';
-screenPrice = 95;
-rollback = 51;
-fullPrice = 100000000;
-adaptive = true;
+for (let i = 0; i < arr.length; i++) {
+    multiplication *= Number(arr[i]);
+}
+console.log(multiplication);
 
-console.log(typeof title);
-console.log(typeof fullPrice);
-console.log(typeof adaptive);
-console.log(screens.length);
-console.log("Стоимость верстки экранов " + screenPrice + " рублей");
-console.log("Стоимость разработки сайта " + fullPrice + " рублей");
-console.log(screens.toLowerCase().split(", "));
-console.log("Процент отката посреднику за работу " + (fullPrice * (rollback / 100)));
+degree = multiplication ** 3;
+console.log(degree);
+
+numTwo = Number(String(degree).substr(0, 2));
+console.log(numTwo);
