@@ -1,7 +1,7 @@
 let title = 'My Project';
 let screens = 'Простые, Сложные, Интерактивные';
 let screenPrice = 95;
-let rollback = 51;
+let rollback = 10;
 let fullPrice = 100000000;
 let adaptive = true;
 
@@ -24,7 +24,7 @@ console.log('Дополнительный тип услуги: ' + service1 + '.
 fullPrice = parseFloat(screenPrice) + parseFloat(servicePrice1) + parseFloat(servicePrice2);
 console.log('Итоговая стоимость работы: ' + fullPrice);
 
-let servicePercentPrice = Math.ceil(fullPrice - 100);
+let servicePercentPrice = Math.ceil(fullPrice - (fullPrice / 100 * rollback));
 console.log('Итоговая стоимость проекта: ' + servicePercentPrice);
 
 
