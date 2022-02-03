@@ -1,40 +1,59 @@
-let title = 'My Project';
-let screens = 'Простые, Сложные, Интерактивные';
-let screenPrice = 95;
 let rollback = 10;
-let fullPrice = 100000000;
 let adaptive = true;
 
-title = prompt('Как называется наш проект?');
-console.log('Мой проект называется: ' + title);
+let fullPrice;
 
-screens = prompt('Какие типы экранов нужно разработать?(простые, сложные, интерактивные)');
-console.log('Нужно разработать ' + screens + ' типы экранов');
-
-screenPrice = +prompt('Сколько будет стоить данная работа?');
-console.log('Данная работа будет стоит ' + screenPrice + ' рублей');
-
+let title = prompt('Как называется наш проект?');
+let screens = prompt('Какие типы экранов нужно разработать?(простые, сложные, интерактивные)');
+let screenPrice = +prompt('Сколько будет стоить данная работа?');
 let service1 = prompt('Какой дополнительный тип услуги нужен?');
 let servicePrice1 = prompt('Сколько это будет стоить?');
 let service2 = prompt('Какой дополнительный тип услуги нужен?');
 let servicePrice2 = prompt('Сколько это будет стоить?');
-console.log('Дополнительный тип услуги: ' + service1 + '. Это будет стоить: ' + servicePrice1 +
-    '. Дополнительный тип услуги: ' + service2 + '. Это будет стоить ' + servicePrice2 + '.');
-
-fullPrice = parseFloat(screenPrice) + parseFloat(servicePrice1) + parseFloat(servicePrice2);
-console.log('Итоговая стоимость работы: ' + fullPrice);
-
 let servicePercentPrice = Math.ceil(fullPrice - (fullPrice / 100 * rollback));
-console.log('Итоговая стоимость проекта: ' + servicePercentPrice);
 
-
-
-if (fullPrice >= 30000) {
-    console.log('Даем скидку в 10%');
-} else if (fullPrice >= 15000 && fullPrice < 30000) {
-    console.log('Даем скидку в 5%');
-} else if (fullPrice > 0 && fullPrice < 15000) {
-    console.log('Скидка не предусмотрена');
-} else {
-    console.log('Что-то пошло не так');
+const getRollbackMessage = function (price) {
+    if (price >= 30000) {
+        return 'Даем скидку в 10%'
+    } else if (price >= 15000 && price < 30000) {
+        return 'Даем скидку в 5%'
+    } else if (price >= 0 && price < 15000) {
+        return 'Скидка не предусмотрена'
+    } else {
+        return 'Что-то пошло не так'
+    }
 }
+
+//кодинг 4 урока - Функции
+
+let allServicePrices = function getAllServicePrices() {
+    return +servicePrice1 + +servicePrice2;
+}
+
+const showTypeOf = function (variable) {
+    console.log(variable, typeof variable);
+}
+
+function getFullPrice() {
+    return +screenPrice + +allServicePrices();
+}
+
+function getTitle() {
+    let titleNoSpace = title.trim();
+    return titleNoSpace[0].toUpperCase() + titleNoSpace.substring(1).toLowerCase();
+}
+
+const getServicePercentPrices = function () {
+    return Math.ceil(fullPrice - (fullPrice / 100 * rollback));
+}
+
+fullPrice = getFullPrice();
+servicePercentPrice = getServicePercentPrices()
+
+showTypeOf(title)
+showTypeOf(screenPrice)
+showTypeOf(adaptive)
+
+console.log('Разработать типы экранов: ' + screens);
+console.log(getRollbackMessage(fullPrice));
+console.log('Итоговая стоимость за вычетом процента отката: ' + servicePercentPrice);
