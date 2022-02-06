@@ -26,8 +26,12 @@ const getRollbackMessage = function (price) {
 
 //кодинг 4 урока - Функции
 
-let allServicePrices = function getAllServicePrices() {
-    return +servicePrice1 + +servicePrice2;
+// let allServicePrices = function getAllServicePrices() {
+//     return +servicePrice1 + +servicePrice2;
+// }
+
+let getAllServicePrices = function (price1, price2) {
+    return +price1 + +price2;
 }
 
 const showTypeOf = function (variable) {
@@ -35,7 +39,7 @@ const showTypeOf = function (variable) {
 }
 
 function getFullPrice() {
-    return +screenPrice + +allServicePrices();
+    return +screenPrice + +allServicePrices;
 }
 
 function getTitle() {
@@ -47,8 +51,10 @@ const getServicePercentPrices = function () {
     return Math.ceil(fullPrice - (fullPrice / 100 * rollback));
 }
 
+allServicePrices = getAllServicePrices(servicePrice1, servicePrice2)
 fullPrice = getFullPrice();
 servicePercentPrice = getServicePercentPrices()
+title = getTitle()
 
 showTypeOf(title)
 showTypeOf(screenPrice)
