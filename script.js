@@ -4,9 +4,9 @@ const isNumber = function (num) {
     return !isNaN(parseFloat(num)) && isFinite(num);
 };
 
-let numRandom = Math.ceil(Math.random() * 100)
-
 const start = function () {
+    let numRandom = Math.ceil(Math.random() * 100)
+
     const game = function () {
         let numUser = prompt('Угадай число от 1 до 100')
 
