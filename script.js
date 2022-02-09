@@ -1,33 +1,38 @@
 // "Загадывание случайного числа от 1 до 100"
 
+const isNumber = function (num) {
+    return !isNaN(parseFloat(num)) && isFinite(num);
+};
+
 let numRandom = Math.ceil(Math.random() * 100)
 
-function isNum(num) {
-    return !isNaN(parseFloat(num)) && isFinite(num)
-}
+const start = function () {
+    const game = function () {
+        let numUser = prompt('Угадай число от 1 до 100')
 
-function userGuessNumber() {
-    let numUser = prompt('Угадай число от 1 до 100')
-
-    if (numUser === null) {
-        return alert('Игра окончена')
-    }
-
-    if (isNum(numUser)) {
-        numUser = +numUser
-
-        if (numUser > numRandom) {
-            alert('Загаданное число меньше')
-        } else if (numUser < numRandom) {
-            alert('Загаданное число больше')
-        } else if (numUser === numRandom) {
-            alert('Поздравляю, Вы угадали!!!')
-            return numUser;
+        if (numUser === null) {
+            alert('Игра окончена!');
+            return;
         }
-    } else {
-        alert('Введи число!')
-    }
-    return userGuessNumber()
-}
+        if (isNumber(numUser)) {
 
-console.log(userGuessNumber())
+            numUser = +numUser
+
+            if (numUser > numRandom) {
+                alert('Загаданное число меньше');
+                game();
+            } else if (numUser < numRandom) {
+                alert('Загаданное число больше');
+                game();
+            } else {
+                alert('Поздравляю, Вы угадали!!!')
+            }
+        } else {
+            alert('Введите число');
+            game();
+        }
+
+    };
+    game();
+};
+start();
