@@ -1,36 +1,148 @@
-"use strict";
+'use strict';
 
-const books = document.querySelectorAll(".book");
-books[1].after(books[0]);
-books[0].after(books[4]);
-books[5].after(books[2]);
+const title = document.getElementsByTagName('h1')[0],
+    buttonPlus = document.querySelector('.screen-btn'),
+    otherItemsPercent = document.querySelectorAll('.other-items.percent'),
+    otherItemsNumber = document.querySelectorAll('.other-items.number '),
 
-const backImg = document.querySelector("body");
-backImg.style.backgroundImage = "url(./image/you-dont-know-js.jpg)";
+    inputRange = document.querySelector('.rollback input'),
+    inputRangeValue = document.querySelector('.rollback .range-value'),
 
-const title2 = document.querySelectorAll("h2")[2];
-title2.textContent = "Книга 3. this и Прототипы Объектов";
-title2.style.color = "darkkhaki";
+    startBtn = document.getElementById('start'),
+    resetBtn = document.getElementById('reset'),
 
-const advertising = document.querySelector(".adv");
-advertising.remove();
+    total = document.getElementsByClassName('total-input')[0],
+    totalCount = document.getElementsByClassName('total-input')[1],
+    totalCountOther = document.getElementsByClassName('total-input')[2],
+    fullTotalCount = document.getElementsByClassName('total-input')[3],
+    totalCountRollback = document.getElementsByClassName('total-input')[4];
 
-const unorderedList2 = document.querySelectorAll("ul")[1];
-const list2 = unorderedList2.querySelectorAll("li");
-list2[3].after(list2[6]);
-list2[6].after(list2[8]);
-list2[9].after(list2[2]);
+let screens = document.querySelectorAll('.screen')
 
-const unorderedList5 = document.querySelectorAll("ul")[4];
-const list5 = unorderedList5.querySelectorAll("li");
-list5[1].after(list5[9]);
-list5[9].after(list5[3]);
-list5[3].after(list5[4]);
-list5[7].after(list5[5]);
 
-const unorderedList6 = document.querySelectorAll("ul")[5];
-const list6 = unorderedList6.querySelectorAll("li");
+const appData = {
+    title: '',
+    screens: [],
+    screenPrice: 0,
+    adaptive: true,
+    rollback: 10,
+    servicePricesPercent: 0,
+    servicePricesNumber: 0,
+    fullPrice: 0,
+    allCount: 0,
+    servicePersentPrice: 0,
+    servicesPercent: {},
+    servicesNumber: {},
+    init: function () {
+        appData.addTitle()
 
-const newList6 = document.createElement("li");
-newList6.textContent = "Глава 8: За пределами ES6";
-list6[8].append(newList6);
+        startBtn.addEventListener('click', appData.allCountScreens)
+        buttonPlus.addEventListener('click', appData.addScreenBlock)
+        inputRange.addEventListener('change', appData.addRollback)
+    },
+    addTitle: function () {
+        document.title = title.textContent
+    },
+    allCountScreens: function () {
+        if (appData.addScreens() !== true) {
+            alert('Не выбран тип или количество экранов')
+        } else appData.start();
+    },
+    start: function () {
+        appData.addScreens()
+        appData.addServices()
+        appData.addPrices()
+        appData.showResult()
+    },
+    showResult: function () {
+        total.value = appData.screenPrice
+        totalCountOther.value = appData.servicePricesPercent + appData.servicePricesNumber
+        fullTotalCount.value = appData.fullPrice
+        totalCount.value = appData.allCount
+    },
+    addRollback: function () {
+        appData.rollback = +inputRange.value;
+        inputRangeValue.textContent = appData.rollback + "%";
+    },
+    addScreens: function () {
+        appData.screens.length = 0
+        screens = document.querySelectorAll('.screen')
+
+        screens.forEach(function (screen, index) {
+            const select = screen.querySelector('select')
+            const input = screen.querySelector('input')
+            const selectName = select.options[select.selectedIndex].textContent
+
+            appData.screens.push({
+                id: index,
+                name: selectName,
+                count: +input.value,
+                price: +select.value * +input.value
+            })
+        })
+
+        if (appData.screens.find(item => item.price === 0)) {
+            return false;
+        } else {
+            return true;
+        }
+
+    },
+    addServices: function () {
+        otherItemsPercent.forEach(function (item) {
+            const check = item.querySelector('input[type=checkbox]')
+            const label = item.querySelector('label')
+            const input = item.querySelector('input[type=text]')
+
+            if (check.checked) {
+                appData.servicesPercent[label.textContent] = +input.value
+            }
+
+        })
+
+        otherItemsNumber.forEach(function (item) {
+            const check = item.querySelector('input[type=checkbox]')
+            const label = item.querySelector('label')
+            const input = item.querySelector('input[type=text]')
+
+            if (check.checked) {
+                appData.servicesNumber[label.textContent] = +input.value
+            }
+
+        })
+    },
+    addScreenBlock: function () {
+        const cloneScreen = screens[0].cloneNode(true)
+
+        screens[screens.length - 1].after(cloneScreen)
+    },
+    addPrices: function () {
+        for (let screen of appData.screens) {
+            appData.screenPrice += +screen.price
+        }
+
+        for (let key in appData.servicesNumber) {
+            appData.servicePricesNumber += appData.servicesNumber[key]
+        }
+
+        for (let key in appData.servicesPercent) {
+            appData.servicePricesPercent += appData.screenPrice * (appData.servicesPercent[key] / 100)
+        }
+
+        appData.screens.forEach(function (item) {
+            appData.allCount += +item.count;
+        })
+
+        appData.fullPrice = +appData.screenPrice + appData.servicePricesNumber + appData.servicePricesPercent
+
+        appData.servicePersentPrice = +appData.fullPrice - (appData.fullPrice * (appData.rollback / 100))
+        totalCountRollback.value = appData.servicePersentPrice
+    },
+    logger: function () {
+        console.log(appData.fullPrice);
+        console.log(appData.servicePersentPrice);
+        console.log(appData.screens);
+    }
+}
+
+appData.init();
