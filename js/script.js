@@ -38,7 +38,11 @@ const appData = {
 
         startBtn.addEventListener('click', appData.allCountScreens)
         buttonPlus.addEventListener('click', appData.addScreenBlock)
-        inputRange.addEventListener('change', appData.addRollback)
+        inputRange.addEventListener('input', appData.addRollback)
+
+        screens.forEach((screen) => {
+            appData.addScreenEvents(screen);
+        });
     },
     addTitle: function () {
         document.title = title.textContent
@@ -112,9 +116,28 @@ const appData = {
         })
     },
     addScreenBlock: function () {
-        const cloneScreen = screens[0].cloneNode(true)
+        const lastIndex = screens.length - 1;
+        const cloneScreen = screens[lastIndex].cloneNode(true);
+        const input = cloneScreen.querySelector("input");
 
-        screens[screens.length - 1].after(cloneScreen)
+        appData.addScreenEvents(cloneScreen);
+        screens[lastIndex].after(cloneScreen);
+        screens = document.querySelectorAll(".screen");
+        input.value = '';
+    },
+    addScreenEvents: function (screen) {
+        const select = screen.querySelector("select");
+        const input = screen.querySelector("input");
+
+        select.addEventListener("change", () => {
+            select.style.borderColor = "";
+            select.style.color = "";
+        });
+
+        input.addEventListener("input", () => {
+            input.style.borderColor = "";
+            input.style.color = "";
+        });
     },
     addPrices: function () {
         for (let screen of appData.screens) {
